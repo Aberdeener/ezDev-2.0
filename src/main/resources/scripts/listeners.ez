@@ -1,0 +1,3 @@
+listener join:
+    tell player {join_message}
+end

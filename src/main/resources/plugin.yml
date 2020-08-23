@@ -1,0 +1,8 @@
+name: EzDev
+version: ${project.version}
+main: me.aberdeener.ezdev.ezDev
+api-version: 1.16
+softdepend: [Vault]
+authors: [Aberdeener]
+description: Write Minecraft scripts in easy to use syntax.
+website: tadhgboyle.dev
