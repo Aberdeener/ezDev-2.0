@@ -6,3 +6,6 @@ softdepend: [Vault]
 authors: [Aberdeener]
 description: Write Minecraft scripts in easy to use syntax.
 website: tadhgboyle.dev
+commands:
+  ezDev:
+    description: Main command for ezDev Plugin

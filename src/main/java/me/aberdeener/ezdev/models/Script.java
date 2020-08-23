@@ -21,11 +21,11 @@ public class Script {
     @Getter
     private final HashMap<Integer, String> tokens;
     @Getter
-    private HashMap<Command, Integer> commandTokens;
+    private final HashMap<Command, Integer> commandTokens = new HashMap<>();
 
     public Script(File file) {
 
-        this.name = file.getName();
+        this.name = file.getName().replace(".ez", "");
         this.file = file;
 
         this.tokens = new HashMap<>();
@@ -46,6 +46,7 @@ public class Script {
 
         // After generating the tokens, scan them for Commands or Listeners which are within them.
         for (Map.Entry<Integer, String> token : tokens.entrySet()) {
+            // TODO
             if (true) {
                 Command command = new Command(token.getValue(), this);
                 CommandManager.registerCommand(command);
