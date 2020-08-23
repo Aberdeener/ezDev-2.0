@@ -33,11 +33,10 @@ public class Script {
         // When a new Script is initialized, generate its tokens from the File which is passed.
         try {
             Scanner scanner = new Scanner(file);
-            int line_number = 1;
+            int token_number = 1;
             while (scanner.hasNext()) {
-                String token = scanner.next();
-                tokens.put(line_number, token.trim());
-                line_number++;
+                tokens.put(token_number, scanner.next().trim());
+                token_number++;
             }
             scanner.close();
         } catch (IOException e) {
@@ -48,14 +47,13 @@ public class Script {
         // After generating the tokens, scan them for Commands or Listeners which are within them.
         for (Map.Entry<Integer, String> token : tokens.entrySet()) {
             if (true) {
-                CommandManager.getCommands().add(new Command(token.getValue(), this));
+                Command command = new Command(token.getValue(), this);
+                CommandManager.registerCommand(command);
+                getCommandTokens().put(command, token.getKey());
             } else if (false) {
-                // Add util method to get class from string (example: "join" -> PlayerJoinEvent.class)
                 Class<? extends Event> event = ListenerManager.getEvent(token.getValue());
-                if (event != null) ListenerManager.getListeners().add(new Listener(this, event));
+                if (event != null) ListenerManager.getListeners().add(new Listener(event, this));
             }
         }
-
     }
-
 }

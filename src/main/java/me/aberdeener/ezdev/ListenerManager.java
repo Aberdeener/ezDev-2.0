@@ -37,13 +37,11 @@ public class ListenerManager implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Set<Listener> listeners = getListeners(event.getClass());
-        for (Listener listener : listeners) listener.execute();
+        for (Listener listener : getListeners(event.getClass())) listener.execute();
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Set<Listener> listeners = getListeners(event.getClass());
-        for (Listener listener : listeners) listener.execute();
+        for (Listener listener : getListeners(event.getClass())) listener.execute();
     }
 }
