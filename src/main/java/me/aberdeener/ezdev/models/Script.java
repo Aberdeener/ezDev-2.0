@@ -3,14 +3,12 @@ package me.aberdeener.ezdev.models;
 import lombok.Getter;
 import me.aberdeener.ezdev.CommandManager;
 import me.aberdeener.ezdev.ListenerManager;
+import me.aberdeener.ezdev.ezDev;
 import org.bukkit.event.Event;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Script {
 
@@ -19,7 +17,7 @@ public class Script {
     @Getter
     private final File file;
     @Getter
-    private final HashMap<Integer, String> tokens;
+    private final NavigableMap<Integer, String> tokens = new TreeMap<>();
     @Getter
     private final HashMap<Command, Integer> commandTokens = new HashMap<>();
 
@@ -27,8 +25,6 @@ public class Script {
 
         this.name = file.getName().replace(".ez", "");
         this.file = file;
-
-        this.tokens = new HashMap<>();
 
         // When a new Script is initialized, generate its tokens from the File which is passed.
         try {
@@ -45,15 +41,37 @@ public class Script {
         }
 
         // After generating the tokens, scan them for Commands or Listeners which are within them.
-        for (Map.Entry<Integer, String> token : tokens.entrySet()) {
-            // TODO
-            if (true) {
-                Command command = new Command(token.getValue(), this);
-                CommandManager.registerCommand(command);
-                getCommandTokens().put(command, token.getKey());
-            } else if (false) {
-                Class<? extends Event> event = ListenerManager.getEvent(token.getValue());
-                if (event != null) ListenerManager.getListeners().add(new Listener(event, this));
+        boolean inHeader = false;
+        for (Map.Entry<Integer, String> token : getTokens().entrySet()) {
+            Map.Entry<Integer, String> triggerEntry = getTokens().higherEntry(token.getKey());
+            if (triggerEntry == null) break;
+            String trigger = triggerEntry.getValue();
+            if (trigger.equals("end")) {
+                inHeader = false;
+                continue;
+            }
+            if (!inHeader) {
+                switch (token.getValue()) {
+                    case "command": {
+                        inHeader = true;
+                        Command command = new Command(trigger.substring(0, trigger.length() - 1), this);
+                        CommandManager.registerCommand(command);
+                        getCommandTokens().put(command, token.getKey());
+                        ezDev.getInstance().getLogger().info("Created command " + command.getLabel() + " in script " + getName());
+                        break;
+                    }
+                    case "listener": {
+                        inHeader = true;
+                        Class<? extends Event> event = ListenerManager.getEvent(trigger);
+                        if (event != null) {
+                            ListenerManager.getListeners().add(new Listener(event, this));
+                            ezDev.getInstance().getLogger().info("Created listener for event:" + event.getCanonicalName());
+                        } else {
+                            ezDev.getInstance().getLogger().warning("Invalid event (" + trigger + ") for listener in script " + getName());
+                        }
+                        break;
+                    }
+                }
             }
         }
     }

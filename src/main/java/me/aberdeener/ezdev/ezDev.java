@@ -17,8 +17,9 @@ public final class ezDev extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        instance = this;
         long startTime = System.currentTimeMillis();
+
+        instance = this;
 
         getLogger().info("Loading scripts...");
         initScripts();

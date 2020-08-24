@@ -22,10 +22,10 @@ public class Command extends org.bukkit.command.Command {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         ezDev.getInstance().getLogger().info("ezdev command " + label);
-        int token_number = getScript().getCommandTokens().get(this);
-        for (Map.Entry<Integer, String> token : getScript().getTokens().entrySet()) {
-            if (token.getKey() < token_number) continue;
-            switch (token.getValue()) {
+        int headerKey = getScript().getCommandTokens().get(this);
+        for (Map.Entry<Integer, String> action : getScript().getTokens().entrySet()) {
+            if (action.getKey() < headerKey) continue;
+            switch (action.getValue()) {
                 case "tell": {
 
                     break;

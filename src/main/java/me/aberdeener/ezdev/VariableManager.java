@@ -11,6 +11,8 @@ public class VariableManager {
 
     @Getter
     private static List<String> variables;
+    @Getter
+    private static boolean VARIABLES_ENABLED = false;
 
     public static void init() {
         File variablesFile = new File(ezDev.getInstance().getDataFolder() + File.separator + "variables.yml");
@@ -29,6 +31,7 @@ public class VariableManager {
         try {
             configuration.load(variablesFile);
             variables = configuration.getStringList("variables");
+            VARIABLES_ENABLED = true;
         } catch (Exception e) {
             e.printStackTrace();
             ezDev.getInstance().getLogger().severe("Failed to load variables from file!");

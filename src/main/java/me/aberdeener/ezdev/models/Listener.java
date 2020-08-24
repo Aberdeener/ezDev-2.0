@@ -13,7 +13,6 @@ public class Listener {
     public Listener(Class<? extends Event> event, Script script) {
         this.event = event;
         this.script = script;
-
     }
 
     public void execute() {}

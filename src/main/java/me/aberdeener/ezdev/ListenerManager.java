@@ -15,11 +15,11 @@ public class ListenerManager implements org.bukkit.event.Listener {
     @Getter
     private static final Set<Listener> listeners = new HashSet<>();
 
-    public static Set<Listener> getListeners(Class<? extends Event> event) {
+    private static Set<Listener> getListeners(Class<? extends Event> event) {
 
         Set<Listener> availableListeners = new HashSet<>();
 
-        for (Listener listener : listeners) if (listener.getEvent() == event) availableListeners.add(listener);
+        for (Listener listener : getListeners()) if (listener.getEvent() == event) availableListeners.add(listener);
 
         return availableListeners;
     }
