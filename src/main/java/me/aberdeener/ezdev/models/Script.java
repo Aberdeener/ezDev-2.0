@@ -20,6 +20,8 @@ public class Script {
     private final NavigableMap<Integer, String> tokens = new TreeMap<>();
     @Getter
     private final HashMap<Command, Integer> commandTokens = new HashMap<>();
+    @Getter
+    private final HashMap<Listener, Integer> listenerTokens = new HashMap<>();
 
     public Script(File file) {
 
@@ -57,17 +59,20 @@ public class Script {
                         Command command = new Command(trigger.substring(0, trigger.length() - 1), this);
                         CommandManager.registerCommand(command);
                         getCommandTokens().put(command, token.getKey());
-                        ezDev.getInstance().getLogger().info("Created command " + command.getLabel() + " in script " + getName());
+                        ezDev.getInstance().getLogger().info("Created command " + command.getLabel() + " in script " + getFile().getName());
                         break;
                     }
                     case "listener": {
                         inHeader = true;
+                        trigger = trigger.substring(0, trigger.length() - 1);
                         Class<? extends Event> event = ListenerManager.getEvent(trigger);
                         if (event != null) {
-                            ListenerManager.getListeners().add(new Listener(event, this));
-                            ezDev.getInstance().getLogger().info("Created listener for event:" + event.getCanonicalName());
+                            Listener listener = new Listener(event, this);
+                            ListenerManager.getListeners().add(listener);
+                            getListenerTokens().put(listener, token.getKey());
+                            ezDev.getInstance().getLogger().info("Created listener for event: " + event.getCanonicalName() + " in script " + getFile().getName()););
                         } else {
-                            ezDev.getInstance().getLogger().warning("Invalid event (" + trigger + ") for listener in script " + getName());
+                            ezDev.getInstance().getLogger().warning("Invalid event (" + trigger + ") for listener in script " + getFile().getName());
                         }
                         break;
                     }

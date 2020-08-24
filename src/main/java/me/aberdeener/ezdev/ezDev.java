@@ -28,6 +28,7 @@ public final class ezDev extends JavaPlugin {
         VariableManager.init();
 
         getCommand("ezDev").setExecutor(new ezDevCommand());
+        getServer().getPluginManager().registerEvents(new ListenerManager(), this);
 
         getLogger().info("Started in " + (System.currentTimeMillis() - startTime) + "ms!");
     }
