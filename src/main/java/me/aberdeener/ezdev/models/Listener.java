@@ -1,6 +1,7 @@
 package me.aberdeener.ezdev.models;
 
 import lombok.Getter;
+import me.aberdeener.ezdev.ezDev;
 import org.bukkit.event.Event;
 
 public class Listener {
@@ -15,6 +16,8 @@ public class Listener {
         this.script = script;
     }
 
-    public void execute() {}
+    public void execute() {
+        ezDev.getInstance().getLogger().info("ezDev event " + getEvent().getName() + " in script " + getScript().getFile());
+    }
 
 }

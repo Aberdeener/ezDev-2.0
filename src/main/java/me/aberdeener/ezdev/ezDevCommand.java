@@ -1,16 +1,17 @@
 package me.aberdeener.ezdev;
 
+import me.aberdeener.ezdev.models.Command;
+import me.aberdeener.ezdev.models.Listener;
 import me.aberdeener.ezdev.models.Script;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class ezDevCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getLabel().equalsIgnoreCase("ezDev")) {
+    public boolean onCommand(CommandSender sender, org.bukkit.command.Command bukkitCommand, String label, String[] args) {
+        if (bukkitCommand.getLabel().equalsIgnoreCase("ezDev")) {
             if (!sender.hasPermission("ezdev.admin")) {
                 sender.sendMessage("no");
                 return true;
@@ -19,14 +20,19 @@ public class ezDevCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.DARK_GREEN + "--== [ezDev] ==--");
                 sender.sendMessage(ChatColor.YELLOW + "Active Scripts: (" + ChatColor.DARK_GREEN + ezDev.getScripts().size() + ChatColor.YELLOW + ")");
                 for (Script script : ezDev.getScripts()) {
-                    sender.sendMessage(ChatColor.GOLD + script.getName() + ChatColor.YELLOW + " - " + ChatColor.GOLD + script.getFile());
+                    sender.sendMessage(ChatColor.GOLD + script.getFile().toString());
+                }
+                sender.sendMessage(ChatColor.YELLOW + "Commands: (" + ChatColor.DARK_GREEN + CommandManager.getCommands().size() + ChatColor.YELLOW + ")");
+                for (Command command : CommandManager.getCommands()) {
+                    sender.sendMessage(ChatColor.GOLD + "/" + command.getLabel() + ChatColor.YELLOW + " - " + ChatColor.GOLD + command.getScript().getFile());
+                }
+                sender.sendMessage(ChatColor.YELLOW + "Listeners: (" + ChatColor.DARK_GREEN + ListenerManager.getListeners().size() + ChatColor.YELLOW + ")");
+                for (Listener listener : ListenerManager.getListeners()) {
+                    sender.sendMessage(ChatColor.GOLD + listener.getEvent().getName() + ChatColor.YELLOW + " - " + ChatColor.GOLD + listener.getScript().getFile());
                 }
             }
-            if (args.length == 1 && args[0].equals("reload")) {
-                // Reload scripts
-                sender.sendMessage(ChatColor.YELLOW + "Reloading scripts...");
-                // TODO
-                // Reload variables as well
+            else if (args.length == 1 && args[0].equals("reload")) {
+                // Reload variables
                 sender.sendMessage(ChatColor.YELLOW + "Reloading variables...");
                 VariableManager.init();
                 sender.sendMessage(ChatColor.GREEN + "Complete!");

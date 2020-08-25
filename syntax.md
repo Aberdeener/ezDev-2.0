@@ -83,9 +83,8 @@ Currently arguments are not supported.
 - Create list in variables.yml
 - Example variables.yml file:
 ```yaml
-variables:
-    website: "https://tadhgboyle.dev"
-    spawn_location: 70, 12, -111
+website: "https://tadhgboyle.dev"
+spawn_location: 70, 12, -111
 ```
 - To use custom variables, wrap the variable name in curly braces in your `value` string.
 - Example:
@@ -100,7 +99,7 @@ end
 ## Tips and Tricks
 
 - ezDev does not care about indentation, though I do recommend using it so your code is more readable.
-- ezDev does not care about line breaks.
+- ezDev cares about lines. Each action must have it's own line.
 
 ---
 

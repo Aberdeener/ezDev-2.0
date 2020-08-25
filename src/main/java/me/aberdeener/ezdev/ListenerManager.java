@@ -36,12 +36,12 @@ public class ListenerManager implements org.bukkit.event.Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        for (Listener listener : getListeners(event.getClass())) listener.execute();
-    }
+    public void onPlayerJoin(PlayerJoinEvent event) { handle(event); }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) { handle(event); }
+
+    private void handle(Event event) {
         for (Listener listener : getListeners(event.getClass())) listener.execute();
     }
 }

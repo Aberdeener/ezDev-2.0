@@ -1,16 +1,12 @@
 package me.aberdeener.ezdev;
 
 import lombok.Getter;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class VariableManager {
 
-    @Getter
-    private static List<String> variables;
     @Getter
     private static boolean VARIABLES_ENABLED = false;
 
@@ -27,10 +23,8 @@ public class VariableManager {
                 return;
             }
         }
-        YamlConfiguration configuration = new YamlConfiguration();
         try {
-            configuration.load(variablesFile);
-            variables = configuration.getStringList("variables");
+            ezDev.getInstance().getConfig().load(variablesFile);
             VARIABLES_ENABLED = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,4 +32,11 @@ public class VariableManager {
         }
     }
 
+    public static boolean isVariable(String key) {
+        return ezDev.getInstance().getConfig().get(key) != null;
+    }
+
+    public static String get(String key) {
+        return ezDev.getInstance().getConfig().get(key).toString();
+    }
 }
