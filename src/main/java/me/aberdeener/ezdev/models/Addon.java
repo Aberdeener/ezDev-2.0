@@ -1,14 +1,17 @@
 package me.aberdeener.ezdev.models;
 
+import lombok.Getter;
 import me.aberdeener.ezdev.ezDev;
 import me.aberdeener.ezdev.managers.AddonManager;
 
-public abstract class Addon {
+public class Addon {
 
-    public abstract String getName();
+    @Getter
+    private final String name;
 
-    public Addon() {
+    protected Addon(String name) {
+        this.name = name;
         AddonManager.addAddon(this);
-        ezDev.getInstance().getLogger().info("Loading Addon - " + getName());
+        ezDev.getInstance().getLogger().info("Loaded Addon - " + getName());
     }
 }

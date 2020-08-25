@@ -1,10 +1,11 @@
 package me.aberdeener.ezdev;
 
 import lombok.Getter;
-import me.aberdeener.ezdev.addons.CoreAddon;
-import me.aberdeener.ezdev.managers.AddonManager;
+import me.aberdeener.ezdev.core.CoreAddon;
+import me.aberdeener.ezdev.core.TellAction;
 import me.aberdeener.ezdev.managers.ListenerManager;
 import me.aberdeener.ezdev.managers.VariableManager;
+import me.aberdeener.ezdev.models.Action;
 import me.aberdeener.ezdev.models.Addon;
 import me.aberdeener.ezdev.models.Script;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,6 +32,15 @@ public final class ezDev extends JavaPlugin {
 
         getLogger().info("Loading addons...");
         new CoreAddon();
+        // Todo, load addons from jar files
+//        File[] addonFiles = new File(getDataFolder() + File.separator + "addons").listFiles();
+//        if (addonFiles == null) {
+//            ezDev.getInstance().getLogger().warning("Could not find addon directory! Attempting to create...");
+//            new File(getDataFolder() + File.separator + "addons").mkdir();
+//            return;
+//        }
+//        for (File addonFile : addonFiles) {
+//        }
 
         getLogger().info("Loading scripts...");
         File[] scriptFiles = new File(getDataFolder() + File.separator + "scripts").listFiles();
@@ -42,7 +52,6 @@ public final class ezDev extends JavaPlugin {
         for (File scriptFile : scriptFiles) {
             if (scriptFile.isFile() && scriptFile.getName().endsWith(".ez")) {
                 Script script = new Script(scriptFile);
-                getScripts().add(script);
             }
         }
 

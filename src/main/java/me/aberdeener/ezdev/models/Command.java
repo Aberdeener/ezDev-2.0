@@ -27,7 +27,6 @@ public class Command extends org.bukkit.command.Command {
     @SneakyThrows
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-        ezDev.getInstance().getLogger().info("ezDev command " + commandLabel);
         int scriptLine = getScript().getCommandLines().get(this);
         for (Map.Entry<Integer, String> line : getScript().getLines().entrySet()) {
             if (line.getKey() > scriptLine) {

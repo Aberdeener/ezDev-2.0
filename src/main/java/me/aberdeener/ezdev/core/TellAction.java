@@ -1,7 +1,6 @@
-package me.aberdeener.ezdev.actions;
+package me.aberdeener.ezdev.core;
 
 import lombok.SneakyThrows;
-import me.aberdeener.ezdev.addons.CoreAddon;
 import me.aberdeener.ezdev.managers.VariableManager;
 import me.aberdeener.ezdev.models.Action;
 import me.aberdeener.ezdev.models.ezDevException;
@@ -13,7 +12,7 @@ import java.io.File;
 
 public class TellAction extends Action {
 
-    public TellAction() {
+    protected TellAction() {
         super(CoreAddon.getInstance(), "tell", -1);
     }
 
