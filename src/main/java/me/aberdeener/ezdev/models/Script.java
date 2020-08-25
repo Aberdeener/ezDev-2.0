@@ -19,6 +19,10 @@ public class Script {
     private final File file;
     @Getter
     private final NavigableMap<Integer, String> lines = new TreeMap<>();
+    @Getter
+    private final HashMap<Command, Integer> commandLines = new HashMap<>();
+    @Getter
+    private final HashMap<Listener, Integer> listenerLines = new HashMap<>();
 
     @SneakyThrows
     public Script(File file){
@@ -52,22 +56,23 @@ public class Script {
             if (!inHeader) {
                 String[] tokens = line.getValue().split(" ");
                 for (int i = 0; i <= tokens.length; i++ ) {
-                    String token = tokens[i];
+                    String header = tokens[i];
                     String trigger;
                     try {
                         trigger = tokens[i + 1];
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        throw new ezDevException("Headers require triggers. Header: " + token, getFile(), line.getKey());
+                        throw new ezDevException("Headers require triggers. Header: " + header, getFile(), line.getKey());
                     }
                     if (!trigger.endsWith(":")) {
                         throw new ezDevException("Triggers must end with `:`. Trigger: " + trigger, getFile(), line.getKey());
                     }
                     trigger = trigger.substring(0, trigger.length() - 1);
-                    switch (token) {
+                    switch (header) {
                         case "command": {
                             inHeader = true;
                             Command command = new Command(trigger, this);
                             if (CommandManager.registerCommand(command)) {
+                                getCommandLines().put(command, line.getKey());
                                 ezDev.getInstance().getLogger().info("Created command /" + command.getLabel() + " in script " + getFile().getName());
                             } else {
                                 ezDev.getInstance().getLogger().warning("Command /" + command.getLabel() + " has previously been registered by an ezDev script (" + CommandManager.getCommandScript(command.getLabel()).getFile() + ")");
@@ -80,6 +85,7 @@ public class Script {
                             if (event != null) {
                                 Listener listener = new Listener(event, this);
                                 ListenerManager.getListeners().add(listener);
+                                getListenerLines().put(listener, line.getKey());
                                 ezDev.getInstance().getLogger().info("Created listener for event: " + event.getCanonicalName() + " in script " + getFile().getName());
                             } else {
                                 ezDev.getInstance().getLogger().warning("Invalid event (" + trigger + ") for listener in script " + getFile().getName());

@@ -33,10 +33,22 @@ public class VariableManager {
     }
 
     public static boolean isVariable(String key) {
-        return ezDev.getInstance().getConfig().get(key) != null;
+        if (!VARIABLES_ENABLED) return false;
+        key = extractKey(key);
+        return ezDev.getInstance().getConfig().get(key) == null;
     }
 
     public static String get(String key) {
-        return ezDev.getInstance().getConfig().get(key).toString();
+        if (!VARIABLES_ENABLED) return key;
+        key = extractKey(key);
+        Object value = ezDev.getInstance().getConfig().get(key);
+        if (value == null) return key;
+        return value.toString();
+    }
+
+    private static String extractKey(String raw) {
+        try {
+            return raw.substring(raw.indexOf("{") + 1, raw.indexOf("}"));
+        } catch (StringIndexOutOfBoundsException ignored) { return raw; }
     }
 }
