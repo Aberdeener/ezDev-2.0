@@ -35,7 +35,7 @@ public class VariableManager {
     public static boolean isVariable(String key) {
         if (!VARIABLES_ENABLED) return false;
         key = extractKey(key);
-        return ezDev.getInstance().getConfig().get(key) == null;
+        return ezDev.getInstance().getConfig().get(key) != null;
     }
 
     public static String get(String key) {

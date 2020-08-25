@@ -53,7 +53,7 @@ public class Command extends org.bukkit.command.Command {
                         if (!message.endsWith("\"") && !lastVariable) {
                             throw new ezDevException("Message strings must end with \". Message: " + message, getScript().getFile(), line.getKey());
                         }
-                        message = message.substring(1, message.length() - 1);
+                        message = message.substring(1, message.length() - (message.endsWith("\"") ? 2 : 0));
                         String target = tokens[1];
                         switch (target) {
                             case "sender": {
