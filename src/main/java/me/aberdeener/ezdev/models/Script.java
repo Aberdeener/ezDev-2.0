@@ -81,7 +81,7 @@ public class Script {
                         }
                         case "listener": {
                             inHeader = true;
-                            Class<? extends Event> event = ListenerManager.getEvent(trigger);
+                            Class<? extends Event> event = ListenerManager.getEvents().get(trigger);
                             if (event != null) {
                                 Listener listener = new Listener(event, this);
                                 ListenerManager.getListeners().add(listener);
