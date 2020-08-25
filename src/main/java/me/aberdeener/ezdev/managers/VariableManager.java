@@ -1,6 +1,7 @@
-package me.aberdeener.ezdev;
+package me.aberdeener.ezdev.managers;
 
 import lombok.Getter;
+import me.aberdeener.ezdev.ezDev;
 
 import java.io.File;
 import java.io.IOException;

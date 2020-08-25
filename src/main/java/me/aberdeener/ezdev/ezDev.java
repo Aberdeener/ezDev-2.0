@@ -1,6 +1,11 @@
 package me.aberdeener.ezdev;
 
 import lombok.Getter;
+import me.aberdeener.ezdev.addons.CoreAddon;
+import me.aberdeener.ezdev.managers.AddonManager;
+import me.aberdeener.ezdev.managers.ListenerManager;
+import me.aberdeener.ezdev.managers.VariableManager;
+import me.aberdeener.ezdev.models.Addon;
 import me.aberdeener.ezdev.models.Script;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,6 +28,9 @@ public final class ezDev extends JavaPlugin {
         long startTime = System.currentTimeMillis();
 
         instance = this;
+
+        getLogger().info("Loading addons...");
+        new CoreAddon();
 
         getLogger().info("Loading scripts...");
         File[] scriptFiles = new File(getDataFolder() + File.separator + "scripts").listFiles();

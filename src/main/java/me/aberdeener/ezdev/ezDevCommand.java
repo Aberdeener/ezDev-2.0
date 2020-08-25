@@ -1,5 +1,10 @@
 package me.aberdeener.ezdev;
 
+import me.aberdeener.ezdev.managers.AddonManager;
+import me.aberdeener.ezdev.managers.CommandManager;
+import me.aberdeener.ezdev.managers.ListenerManager;
+import me.aberdeener.ezdev.managers.VariableManager;
+import me.aberdeener.ezdev.models.Addon;
 import me.aberdeener.ezdev.models.Command;
 import me.aberdeener.ezdev.models.Listener;
 import me.aberdeener.ezdev.models.Script;
@@ -18,6 +23,10 @@ public class ezDevCommand implements CommandExecutor {
             }
             if (args.length == 0) {
                 sender.sendMessage(ChatColor.DARK_GREEN + "--== [ezDev] ==--");
+                sender.sendMessage(ChatColor.YELLOW + "Active Addons: (" + ChatColor.DARK_GREEN + AddonManager.getAddons().size() + ChatColor.YELLOW + ")");
+                for (Addon addon : AddonManager.getAddons()) {
+                    sender.sendMessage(ChatColor.GOLD + addon.getName());
+                }
                 sender.sendMessage(ChatColor.YELLOW + "Active Scripts: (" + ChatColor.DARK_GREEN + ezDev.getScripts().size() + ChatColor.YELLOW + ")");
                 for (Script script : ezDev.getScripts()) {
                     sender.sendMessage(ChatColor.GOLD + script.getFile().toString());

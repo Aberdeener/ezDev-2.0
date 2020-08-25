@@ -1,6 +1,7 @@
-package me.aberdeener.ezdev;
+package me.aberdeener.ezdev.managers;
 
 import lombok.Getter;
+import me.aberdeener.ezdev.ezDev;
 import me.aberdeener.ezdev.models.Command;
 import me.aberdeener.ezdev.models.Script;
 import org.bukkit.Bukkit;

@@ -2,8 +2,8 @@ package me.aberdeener.ezdev.models;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
-import me.aberdeener.ezdev.CommandManager;
-import me.aberdeener.ezdev.ListenerManager;
+import me.aberdeener.ezdev.managers.CommandManager;
+import me.aberdeener.ezdev.managers.ListenerManager;
 import me.aberdeener.ezdev.ezDev;
 import org.bukkit.event.Event;
 
