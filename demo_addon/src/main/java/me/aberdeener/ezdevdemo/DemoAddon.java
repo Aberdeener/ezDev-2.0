@@ -11,9 +11,13 @@ public class DemoAddon extends Addon {
     private static DemoAddon instance;
 
     public DemoAddon() {
+        // Define the name of your Addon
         super("Demo");
+        // Provide the instance of your Addon for Actions to link to
         instance = this;
+        // Initialize your Actions
         new TeleportAction();
+        // Create your PlayerEvents - NOT CURRENTLY FULLY SUPPORTED :(
         ListenerManager.addEvent("teleport", PlayerTeleportEvent.class, this);
     }
 
