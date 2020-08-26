@@ -1,16 +1,13 @@
 package me.aberdeener.ezdev;
 
-import me.aberdeener.ezdev.managers.AddonManager;
-import me.aberdeener.ezdev.managers.CommandManager;
-import me.aberdeener.ezdev.managers.ListenerManager;
-import me.aberdeener.ezdev.managers.VariableManager;
-import me.aberdeener.ezdev.models.Addon;
-import me.aberdeener.ezdev.models.Command;
-import me.aberdeener.ezdev.models.Listener;
-import me.aberdeener.ezdev.models.Script;
+import me.aberdeener.ezdev.managers.*;
+import me.aberdeener.ezdev.models.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.player.PlayerEvent;
+
+import java.util.Map;
 
 public class ezDevCommand implements CommandExecutor {
 
@@ -27,17 +24,22 @@ public class ezDevCommand implements CommandExecutor {
                 for (Addon addon : AddonManager.getAddons()) {
                     sender.sendMessage(ChatColor.GOLD + addon.getName());
                 }
-                sender.sendMessage(ChatColor.YELLOW + "Active Scripts: (" + ChatColor.DARK_GREEN + ezDev.getScripts().size() + ChatColor.YELLOW + ")");
+                sender.sendMessage(ChatColor.YELLOW + "Actions: (" + ChatColor.DARK_GREEN + ActionManager.getActions().size() + ChatColor.YELLOW + ")");
+                for (Action action : ActionManager.getActions()) {
+                    sender.sendMessage(ChatColor.GOLD + action.getPhrase() + ChatColor.YELLOW + " - Addon: " + ChatColor.GOLD + action.getAddon().getName());
+                }
+                sender.sendMessage(ChatColor.YELLOW + "Events: (" + ChatColor.DARK_GREEN + ListenerManager.getListeners().size() + ChatColor.YELLOW + ")");
+                for (Map.Entry<String, Class<? extends PlayerEvent>> event : ListenerManager.getEvents().entrySet()) {
+                    // TODO: event.getAddon()
+                    sender.sendMessage(ChatColor.GOLD + event.getKey() + ChatColor.YELLOW + " - " + ChatColor.GOLD + event.getValue().getName());
+                }
+                sender.sendMessage(ChatColor.YELLOW + "Scripts: (" + ChatColor.DARK_GREEN + ezDev.getScripts().size() + ChatColor.YELLOW + ")");
                 for (Script script : ezDev.getScripts()) {
                     sender.sendMessage(ChatColor.GOLD + script.getFile().toString());
                 }
                 sender.sendMessage(ChatColor.YELLOW + "Commands: (" + ChatColor.DARK_GREEN + CommandManager.getCommands().size() + ChatColor.YELLOW + ")");
                 for (Command command : CommandManager.getCommands()) {
-                    sender.sendMessage(ChatColor.GOLD + "/" + command.getLabel() + ChatColor.YELLOW + " - " + ChatColor.GOLD + command.getScript().getFile());
-                }
-                sender.sendMessage(ChatColor.YELLOW + "Listeners: (" + ChatColor.DARK_GREEN + ListenerManager.getListeners().size() + ChatColor.YELLOW + ")");
-                for (Listener listener : ListenerManager.getListeners()) {
-                    sender.sendMessage(ChatColor.GOLD + listener.getEvent().getName() + ChatColor.YELLOW + " - " + ChatColor.GOLD + listener.getScript().getFile());
+                    sender.sendMessage(ChatColor.GOLD + "/" + command.getLabel() + ChatColor.YELLOW + " - Script: " + ChatColor.GOLD + command.getScript().getFile());
                 }
             }
             else if (args.length == 1 && args[0].equals("reload")) {
