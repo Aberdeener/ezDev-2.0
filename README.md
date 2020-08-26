@@ -46,4 +46,4 @@ In your pom.xml, add these:
 ```
 For ezDev's AddonLoader to use your Addon correctly, it requires a `main.txt` file in your /src/main/resources folder which contains only the name of your Main class.
 
-Check out the [DemoAddon](https://github.com/Aberdeener/ezDev/demo_addon) for the basics of using the classes.
+Check out the [DemoAddon](https://github.com/Aberdeener/ezDev-2.0/demo_addon) for the basics of using the classes.
