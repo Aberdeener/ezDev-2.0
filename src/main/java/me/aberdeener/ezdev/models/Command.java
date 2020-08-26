@@ -3,11 +3,7 @@ package me.aberdeener.ezdev.models;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.aberdeener.ezdev.managers.ActionManager;
-import me.aberdeener.ezdev.managers.VariableManager;
-import me.aberdeener.ezdev.ezDev;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.Map;
 
@@ -35,9 +31,7 @@ public class Command extends org.bukkit.command.Command {
                 Action action = ActionManager.findAction(tokens);
                 if (action == null) {
                     throw new ezDevException("Invalid action. Action: " + tokens[0], getScript().getFile(), line.getKey());
-                } else {
-                    action.handle(sender, tokens, getScript().getFile(), line.getKey());
-                }
+                } else action.handle(sender, tokens, getScript().getFile(), line.getKey());
             }
         }
         return true;

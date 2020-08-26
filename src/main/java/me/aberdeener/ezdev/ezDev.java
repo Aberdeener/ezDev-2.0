@@ -51,7 +51,7 @@ public final class ezDev extends JavaPlugin {
         }
         for (File scriptFile : scriptFiles) {
             if (scriptFile.isFile() && scriptFile.getName().endsWith(".ez")) {
-                Script script = new Script(scriptFile);
+                new Script(scriptFile);
             }
         }
 

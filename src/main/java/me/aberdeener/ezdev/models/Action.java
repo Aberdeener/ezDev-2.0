@@ -9,11 +9,11 @@ import java.io.File;
 public abstract class Action {
 
     @Getter
-    final Addon addon;
+    private final Addon addon;
     @Getter
-    final String phrase;
+    private final String phrase;
     @Getter
-    final int length;
+    private final int length;
 
     protected Action(Addon addon, String phrase, int length) {
         this.addon = addon;

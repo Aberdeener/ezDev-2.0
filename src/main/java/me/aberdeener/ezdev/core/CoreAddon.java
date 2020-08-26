@@ -17,6 +17,7 @@ public class CoreAddon extends Addon {
         instance = this;
         // Initiate your Addon's actions + events
         new TellAction();
+        new GiveAction();
         // TODO: See ListenerManager
         ListenerManager.addEvent("join", PlayerJoinEvent.class, this);
         ListenerManager.addEvent("quit", PlayerQuitEvent.class, this);

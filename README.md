@@ -3,6 +3,7 @@ My own version of Skript.
 Doubt this will ever reach a release, mainly for fun right now.
 
 Some plans:
+ - Let `Actions` have multiple `length`s.
  - Define console/player only commands. Example usage:
      ```
      command website (player):
@@ -12,6 +13,10 @@ Some plans:
      command sudo (console):
         // Do console only things
      end
+   
+     command sudo:
+        // Do whatever things
+     end
      ```
  - Define command arguments. Example usage:
     ```
@@ -20,5 +25,6 @@ Some plans:
         tell victim "You got killed!"
     end
     ```
+ - Allow events other than child `PlayerEvents`
  - Developer API
-    - Add custom actions + events
+    - Add custom actions + events | **In Progress**

@@ -6,6 +6,7 @@ import me.aberdeener.ezdev.managers.CommandManager;
 import me.aberdeener.ezdev.managers.ListenerManager;
 import me.aberdeener.ezdev.ezDev;
 import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,7 +82,7 @@ public class Script {
                         }
                         case "listener": {
                             inHeader = true;
-                            Class<? extends Event> event = ListenerManager.getEvents().get(trigger);
+                            Class<? extends PlayerEvent> event = ListenerManager.getEvents().get(trigger);
                             if (event != null) {
                                 Listener listener = new Listener(event, this);
                                 ListenerManager.getListeners().add(listener);
@@ -98,5 +99,6 @@ public class Script {
             }
         }
         ezDev.getScripts().add(this);
+        ezDev.getInstance().getLogger().info("Loaded script " + getFile());
     }
 }
