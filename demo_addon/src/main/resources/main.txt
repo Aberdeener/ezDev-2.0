@@ -1,0 +1,1 @@
+me.aberdeener.ezdevdemo.DemoAddon

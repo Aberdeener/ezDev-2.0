@@ -27,3 +27,6 @@ hs_err_pid*
 *.iml
 target
 test_server
+demo_addon/demo_addon.iml
+demo_addon/target
+demo_addon/.idea

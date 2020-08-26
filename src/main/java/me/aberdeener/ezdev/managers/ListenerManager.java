@@ -28,10 +28,11 @@ public class ListenerManager implements org.bukkit.event.Listener {
     public static void addEvent(String name, Class<? extends PlayerEvent> event, Addon addon) {
         if (getEvents().size() > 0) {
             for (String eventName : getEvents().keySet()) {
-                if (!eventName.equalsIgnoreCase(name)) {
-                    getEvents().put(name, event);
-                } else {
+                if (eventName.equalsIgnoreCase(name)) {
                     throw new ezDevException("Event with same name already registered. Event: " + name);
+                } else {
+                    getEvents().put(name, event);
+                    return;
                 }
             }
         } else getEvents().put(name, event);
