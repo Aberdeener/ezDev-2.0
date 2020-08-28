@@ -22,6 +22,6 @@ public abstract class Action {
         ActionManager.addAction(this);
     }
 
-    public abstract void handle(CommandSender sender, String[] tokens, File scriptFile, int line);
+    public abstract boolean handle(CommandSender sender, String[] tokens, File scriptFile, int line);
 
 }

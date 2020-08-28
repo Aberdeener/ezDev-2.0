@@ -31,7 +31,7 @@ public class Command extends org.bukkit.command.Command {
                 Action action = ActionManager.findAction(tokens);
                 if (action == null) {
                     throw new ezDevException("Invalid action. Action: " + tokens[0], getScript().getFile(), line.getKey());
-                } else action.handle(sender, tokens, getScript().getFile(), line.getKey());
+                } if (!action.handle(sender, tokens, getScript().getFile(), line.getKey())) break;
             }
         }
         return true;

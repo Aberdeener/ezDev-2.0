@@ -19,7 +19,7 @@ public class GiveAction extends Action {
 
     @SneakyThrows
     @Override
-    public void handle(CommandSender sender, String[] tokens, File scriptFile, int line) {
+    public boolean handle(CommandSender sender, String[] tokens, File scriptFile, int line) {
         String target = tokens[1];
         String item = tokens[2];
         String quantity = tokens[3];
@@ -39,5 +39,6 @@ public class GiveAction extends Action {
             }
             default: throw new ezDevException("Invalid target. Target: " + target, scriptFile, line);
         }
+        return true;
     }
 }

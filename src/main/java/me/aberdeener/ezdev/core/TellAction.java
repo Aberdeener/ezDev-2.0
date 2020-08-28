@@ -16,7 +16,7 @@ public class TellAction extends Action {
 
     @SneakyThrows
     @Override
-    public void handle(CommandSender sender, String[] tokens, File scriptFile, int line) {
+    public boolean handle(CommandSender sender, String[] tokens, File scriptFile, int line) {
         String message = Utils.getMessage(tokens, scriptFile, line);
         String target = tokens[1];
         switch (target) {
@@ -30,5 +30,6 @@ public class TellAction extends Action {
             }
             default: throw new ezDevException("Invalid target. Target: " + target, scriptFile, line);
         }
+        return true;
     }
 }
