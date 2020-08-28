@@ -41,7 +41,7 @@ public class AddonLoader extends URLClassLoader {
 
         ZipEntry entry = jar.getEntry("main.txt");
         if (entry == null) {
-            throw new ezDevException("Jar does not contain main.txt. This file is required for the initialization of your addon.");
+            throw new ezDevException("Jar does not contain main.txt. This file is required for the initialization of your addon. Jar: " + jar.getName());
         }
         try (InputStream is = jar.getInputStream(entry)) {
             Scanner scanner = new Scanner(is).useDelimiter("\\A");
@@ -49,7 +49,7 @@ public class AddonLoader extends URLClassLoader {
             try {
                 mainClass = findClass(clazz);
             } catch (ClassNotFoundException ex) {
-                throw new ezDevException("The specified class in main.txt couldn't be found.");
+                throw new ezDevException("The specified class in main.txt couldn't be found. Specified class: " + clazz);
             }
         }
 

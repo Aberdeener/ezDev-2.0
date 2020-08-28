@@ -22,6 +22,7 @@ public class Listener {
 
     @SneakyThrows
     public void execute(PlayerEvent event) {
+        // TODO: Fix
         Player sender = event.getPlayer();
         int scriptLine = getScript().getListenerLines().get(this);
         for (Map.Entry<Integer, String> line : getScript().getLines().entrySet()) {
