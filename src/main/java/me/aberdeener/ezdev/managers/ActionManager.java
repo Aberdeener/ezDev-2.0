@@ -17,7 +17,7 @@ public class ActionManager {
     public static void addAction(Action action) {
         if (getActions().size() > 0) {
             for (Action a : getActions()) {
-                if (a.getPhrase().equals(action.getPhrase()) && a.getLength() == action.getLength()) {
+                if (a.getPhrase().equals(action.getPhrase()) && action.getLengths().stream().anyMatch(element -> a.getLengths().contains(element))) {
                     throw new ezDevException("Action already registered with same name and length. Original action: " + a.getPhrase() + " from addon " + a.getAddon().getName() + ". Repeat action: " + action.getPhrase() + " from addon " + action.getAddon().getName());
                 } else {
                     getActions().add(action);
@@ -30,7 +30,7 @@ public class ActionManager {
     public static Action findAction(String[] tokens) {
         for (Action action : getActions()) {
             if (action.getPhrase().equals(tokens[0])) {
-                if (action.getLength() == -1 || action.getLength() == (tokens.length - 1)) return action;
+                if (action.getLengths().contains(-1) || action.getLengths().contains(tokens.length - 1)) return action;
             }
         }
         return null;

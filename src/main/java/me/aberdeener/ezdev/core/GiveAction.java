@@ -10,21 +10,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.util.Collections;
 
 public class GiveAction extends Action {
 
-    protected GiveAction() {
-        super(CoreAddon.getInstance(), "give", 3);
+    protected GiveAction() throws ezDevException {
+        super(CoreAddon.getInstance(), "give", Collections.singletonList(1));
     }
 
     @SneakyThrows
     @Override
-    public boolean handle(CommandSender sender, String[] tokens, File scriptFile, int line) {
+    public boolean handle(CommandSender sender, String[] tokens, int length, File scriptFile, int line) {
         String target = tokens[1];
         String item = tokens[2];
         String quantity = tokens[3];
         ItemStack itemStack = new ItemStack(Material.getMaterial(item), Integer.parseInt(quantity));
         switch (target) {
+            case "player":
             case "sender": {
                 if (sender instanceof Player) {
                     ((Player) sender).getInventory().addItem(itemStack);

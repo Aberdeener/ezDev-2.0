@@ -5,6 +5,7 @@ import me.aberdeener.ezdev.managers.ActionManager;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
+import java.util.List;
 
 public abstract class Action {
 
@@ -13,15 +14,17 @@ public abstract class Action {
     @Getter
     private final String phrase;
     @Getter
-    private final int length;
+    private final List<Integer> lengths;
 
-    protected Action(Addon addon, String phrase, int length) {
+    protected Action(Addon addon, String phrase, List<Integer> lengths) throws ezDevException {
+        for (int length : lengths) {
+            if (length < -1) throw new ezDevException("Action length must be greater than or equal to -1. Action: " + phrase + ", Addon: " + addon.getName());
+        }
         this.addon = addon;
         this.phrase = phrase;
-        this.length = length;
+        this.lengths = lengths;
         ActionManager.addAction(this);
     }
 
-    public abstract boolean handle(CommandSender sender, String[] tokens, File scriptFile, int line);
-
+    public abstract boolean handle(CommandSender sender, String[] tokens, int length, File scriptFile, int line);
 }

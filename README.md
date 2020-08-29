@@ -3,7 +3,7 @@ My own version of Skript.
 Doubt this will ever reach a release, mainly for fun right now.
 
 ### Some plans:
- - Let `Actions` have multiple `length`s.
+ - Let `Action`s have multiple `length`s.
  - Define console/player only commands. Example usage:
      ```
      command website (player):
@@ -20,12 +20,13 @@ Doubt this will ever reach a release, mainly for fun right now.
      ```
  - Define command arguments. Example usage:
     ```
-    command kill <victim>:
+    command kill <(player) victim>:
         kill victim
         tell victim "You got killed!"
     end
     ```
  - Allow events other than child `PlayerEvents`
+ - Allow `Action`s to specifiy if they are for players or console or both.
  
 ### Developer API
 Greetings, developer!
@@ -42,9 +43,9 @@ In your pom.xml, add these:
 <dependency>
     <groupId>com.github.Aberdeener</groupId>
     <artifactId>ezDev-2.0</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 For ezDev's AddonLoader to use your Addon correctly, it requires a `main.txt` file in your /src/main/resources folder which contains only the name of your Main class.
 
-Check out the [DemoAddon](https://github.com/Aberdeener/ezDev-2.0/demo_addon) for the basics of using the classes.
+Check out the [DemoAddon](https://github.com/Aberdeener/ezDev-2.0/tree/master/demo_addon) for the basics of using the classes.

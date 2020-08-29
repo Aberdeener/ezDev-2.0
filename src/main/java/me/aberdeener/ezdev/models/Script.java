@@ -59,19 +59,19 @@ public class Script {
                 for (int i = 0; i <= tokens.length; i++ ) {
                     String header = tokens[i];
                     String trigger;
+                    // Get trigger for the header
                     try {
                         trigger = tokens[i + 1];
                     } catch (ArrayIndexOutOfBoundsException e) {
                         throw new ezDevException("Headers require triggers. Header: " + header, getFile(), line.getKey());
                     }
-                    if (!trigger.endsWith(":")) {
-                        throw new ezDevException("Triggers must end with `:`. Trigger: " + trigger, getFile(), line.getKey());
-                    }
+                    Command.Executor executor = getExecutor(trigger, tokens, i, line.getKey());
+                    System.out.println(executor);
                     trigger = trigger.substring(0, trigger.length() - 1);
                     switch (header) {
                         case "command": {
                             inHeader = true;
-                            Command command = new Command(trigger, this);
+                            Command command = new Command(trigger, this, executor);
                             if (CommandManager.registerCommand(command)) {
                                 getCommandLines().put(command, line.getKey());
                                 ezDev.getInstance().getLogger().info("Created command /" + command.getLabel() + " in script " + getFile().getName());
@@ -100,5 +100,36 @@ public class Script {
         }
         ezDev.getScripts().add(this);
         ezDev.getInstance().getLogger().info("Loaded script " + getFile());
+    }
+
+    @SneakyThrows
+    private Command.Executor getExecutor(String trigger, String[] tokens, int i, int line_number) {
+        // Get if they define a specific executor
+        Command.Executor executor;
+        if (trigger.endsWith(":")) {
+            executor = Command.Executor.BOTH;
+        } else {
+            try {
+                String executorType = tokens[i + 2];
+                if (!executorType.endsWith(":")) {
+                    throw new ezDevException("Executors must end with `:`. Executor: " + executorType, getFile(), line_number);
+                } else if (!executorType.startsWith("(") || !executorType.contains(")")) {
+                    throw new ezDevException("Executors must start with `(` and end with `)`. Executor: " + executorType, getFile(), line_number);
+                }
+                executorType = executorType.substring(1, executorType.length() - 2);
+                switch (executorType) {
+                    case "player":
+                        executor = Command.Executor.PLAYER;
+                        break;
+                    case "console":
+                        executor = Command.Executor.CONSOLE;
+                        break;
+                    default: throw new ezDevException("Invalid executor. Executor: " + executorType + ". Valid executors: `player`, `console`", getFile(), line_number);
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new ezDevException("Triggers must end with `:` when an executor is not specified. Trigger: " + trigger, getFile(), line_number);
+            }
+        }
+        return executor;
     }
 }

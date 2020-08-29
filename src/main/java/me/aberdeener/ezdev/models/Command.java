@@ -13,11 +13,14 @@ public class Command extends org.bukkit.command.Command {
     private final String label;
     @Getter
     private final Script script;
+    @Getter
+    private final Executor executor;
 
-    public Command(String label, Script script) {
+    public Command(String label, Script script, Executor executor) {
         super(label);
         this.label = label;
         this.script = script;
+        this.executor = executor;
     }
 
     @SneakyThrows
@@ -31,9 +34,13 @@ public class Command extends org.bukkit.command.Command {
                 Action action = ActionManager.findAction(tokens);
                 if (action == null) {
                     throw new ezDevException("Invalid action. Action: " + tokens[0], getScript().getFile(), line.getKey());
-                } if (!action.handle(sender, tokens, getScript().getFile(), line.getKey())) break;
+                } if (!action.handle(sender, tokens, tokens.length, getScript().getFile(), line.getKey())) break;
             }
         }
         return true;
+    }
+
+    public enum Executor {
+        PLAYER, CONSOLE, BOTH
     }
 }

@@ -33,7 +33,7 @@ public class Listener {
                 if (action == null) {
                     throw new ezDevException("Invalid action. Action: " + tokens[0]);
                 } else {
-                    action.handle(sender, tokens, getScript().getFile(), line.getKey());
+                    action.handle(sender, tokens, tokens.length, getScript().getFile(), line.getKey());
                 }
             }
         }

@@ -28,9 +28,12 @@ public class AddonLoader extends URLClassLoader {
     @Getter
     private final Class<?> mainClass;
 
-    /*
-     Credit to @Dreta for the original Jar loader class.
-     Modified by Aberdeener for ezDev usage.
+    /**
+     * Load a jar file into ezDev's Addon system.
+     * @param file The jar file to attempt to load
+     * @throws Exception If no main.txt was found, or the class specified in the main.txt is invalid.
+     * @author Dreta
+     * @author Aberdeener
      */
     public AddonLoader(File file) throws Exception {
         super(new URL[]{file.toURI().toURL()}, ezDev.class.getClassLoader());

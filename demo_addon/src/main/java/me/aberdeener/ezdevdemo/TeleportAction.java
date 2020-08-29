@@ -20,5 +20,6 @@ public class TeleportAction extends Action {
 
     public boolean handle(CommandSender commandSender, String[] strings, File file, int i) {
         // Do things when "teleport" is called in a Script
+        return true;
     }
 }
