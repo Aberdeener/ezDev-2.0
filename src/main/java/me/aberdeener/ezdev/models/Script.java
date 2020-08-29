@@ -66,8 +66,7 @@ public class Script {
                         throw new ezDevException("Headers require triggers. Header: " + header, getFile(), line.getKey());
                     }
                     Command.Executor executor = getExecutor(trigger, tokens, i, line.getKey());
-                    System.out.println(executor);
-                    trigger = trigger.substring(0, trigger.length() - 1);
+                    if (executor == Command.Executor.BOTH) trigger = trigger.substring(0, trigger.length() - 1);
                     switch (header) {
                         case "command": {
                             inHeader = true;

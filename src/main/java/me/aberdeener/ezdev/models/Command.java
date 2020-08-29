@@ -3,7 +3,9 @@ package me.aberdeener.ezdev.models;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import me.aberdeener.ezdev.managers.ActionManager;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Map;
 
@@ -26,6 +28,15 @@ public class Command extends org.bukkit.command.Command {
     @SneakyThrows
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        if (getExecutor() != Executor.BOTH) {
+            if (sender instanceof Player && getExecutor() != Executor.PLAYER) {
+                sender.sendMessage(ChatColor.RED + "Only console can execute this command.");
+                return true;
+            } else if (getExecutor() != Executor.CONSOLE) {
+                sender.sendMessage(ChatColor.RED + "Only players can execute this command.");
+                return true;
+            }
+        }
         int scriptLine = getScript().getCommandLines().get(this);
         for (Map.Entry<Integer, String> line : getScript().getLines().entrySet()) {
             if (line.getKey() > scriptLine) {

@@ -15,7 +15,7 @@ import java.util.Collections;
 public class GiveAction extends Action {
 
     protected GiveAction() throws ezDevException {
-        super(CoreAddon.getInstance(), "give", Collections.singletonList(1));
+        super(CoreAddon.getInstance(), "give", Collections.singletonList(3));
     }
 
     @SneakyThrows

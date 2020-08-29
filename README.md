@@ -3,21 +3,6 @@ My own version of Skript.
 Doubt this will ever reach a release, mainly for fun right now.
 
 ### Some plans:
- - Let `Action`s have multiple `length`s.
- - Define console/player only commands. Example usage:
-     ```
-     command website (player):
-         // Do player only things
-     end
-   
-     command sudo (console):
-        // Do console only things
-     end
-   
-     command sudo:
-        // Do whatever things
-     end
-     ```
  - Define command arguments. Example usage:
     ```
     command kill <(player) victim>:
