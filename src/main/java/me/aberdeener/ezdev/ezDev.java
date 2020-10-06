@@ -2,6 +2,7 @@ package me.aberdeener.ezdev;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import me.aberdeener.ezdev.arguments.*;
 import me.aberdeener.ezdev.core.CoreAddon;
 import me.aberdeener.ezdev.managers.ListenerManager;
 import me.aberdeener.ezdev.managers.VariableManager;
@@ -39,6 +40,13 @@ public final class ezDev extends JavaPlugin {
             }
         }
 
+        getLogger().info("Loading arguments...");
+        new IntegerArgument();
+        new PlayerArgument();
+        new MaterialArgument();
+        new StringArgument();
+        new WordArgument();
+
         getLogger().info("Loading scripts...");
         File[] scriptFiles = new File(getDataFolder(), "scripts").listFiles();
         if (scriptFiles == null) {
@@ -56,7 +64,7 @@ public final class ezDev extends JavaPlugin {
         VariableManager.init();
 
         getCommand("ezDev").setExecutor(new ezDevCommand());
-        getServer().getPluginManager().registerEvents(new ListenerManager(), this);
+        //getServer().getPluginManager().registerEvents(new ListenerManager(), this);
 
         getLogger().info("Started in " + (System.currentTimeMillis() - startTime) + "ms!");
     }

@@ -1,10 +1,12 @@
 package me.aberdeener.ezdev.models;
 
 import lombok.Getter;
+import me.aberdeener.ezdev.arguments.Argument;
 import me.aberdeener.ezdev.managers.ActionManager;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public abstract class Action {
@@ -26,5 +28,5 @@ public abstract class Action {
         ActionManager.addAction(this);
     }
 
-    public abstract boolean handle(CommandSender sender, String[] tokens, int length, File scriptFile, int line);
+    public abstract boolean handle(CommandSender sender, List<Object> tokens, LinkedHashMap<String, Argument> arguments, int length, File scriptFile, int line);
 }

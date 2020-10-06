@@ -61,7 +61,7 @@ Currently arguments are not supported.
 
 ---
 
-### Actions:
+### Built-in Actions:
 - `permission <permission node>` - Require the sender has `<permission node>` to proceed. The permission node is the `<value>`.
 - `tell <recipient> <message>` - Send a chat message to `<player(s)>`. 
     - Applicable `<recipient>` variables: `sender`, `player`, `all`.
@@ -69,8 +69,6 @@ Currently arguments are not supported.
     - Applicable `<recipient>` variables: `sender`, `player`, `all`.
     - `<quantity>` needs to be a positive integer.
     - `<item>` needs to be a [Minecraft Item Name](https://minecraft-ids.grahamedgecombe.com/), **not** item ID.
-- `teleport <recipient> <x> <y> <z> <world> - Teleport `<recipient>` to a location.
-    - Applicable `<recipient>` variables: `sender`, `player`, `all`.
 - `execute <recipient> <command>` - Forces `<recipient>` to run `<command>` command.
     - Applicable `<recipient>` variables: `sender`, `player`, `all`.
     - If `<recipient>` does not have the `<command>`'s permission, or any other sort of error, they will see the error message as normal. This is not "ghost".    
