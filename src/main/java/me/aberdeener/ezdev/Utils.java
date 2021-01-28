@@ -23,15 +23,15 @@ public class Utils {
      * @return Formatted message with variables replaced and quotes removed
      */
     @SneakyThrows
-    public static String getMessage(List<Object> tokens, LinkedHashMap<String, Argument> arguments, File scriptFile, int line) {
+    public static String getMessage(List<Object> tokens, LinkedHashMap<String, Argument<?>> arguments, File scriptFile, int line) {
         StringBuilder sb = new StringBuilder();
         boolean lastVariable = false;
         for (int i = 2; i < tokens.size(); i++) {
             if (i == 2 && !((String) tokens.get(2)).startsWith("\"")) {
                 throw new ezDevException("Message strings must start with \".", scriptFile, line);
             }
-            if (VariableManager.isVariable((String) tokens.get(i))) {
-                sb.append(VariableManager.get((String) tokens.get(i))).append(" ");
+            if (ezDev.getVariableManagerInstance().isVariable((String) tokens.get(i))) {
+                sb.append(ezDev.getVariableManagerInstance().get((String) tokens.get(i))).append(" ");
                 lastVariable = true;
             } else {
                 sb.append(tokens.add(i)).append(" ");
@@ -42,6 +42,7 @@ public class Utils {
         if (!message.endsWith("\"") && !lastVariable) {
             throw new ezDevException("Message strings must end with \". Message: " + message, scriptFile, line);
         }
+
         return message.substring(1, message.length() - (message.endsWith("\"") ? 1 : 0));
     }
 
@@ -59,6 +60,7 @@ public class Utils {
      * @param message formatted message to be sent (see getMessage())
      */
     public static void broadcastMessage(String message) {
-        for (Player player : Bukkit.getOnlinePlayers()) player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        for (Player player : Bukkit.getOnlinePlayers()) sendMessage(player, message);
     }
+
 }

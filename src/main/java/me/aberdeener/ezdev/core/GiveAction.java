@@ -17,13 +17,13 @@ import java.util.List;
 
 public class GiveAction extends Action {
 
-    protected GiveAction() throws ezDevException {
-        super(CoreAddon.getInstance(), "give", Collections.singletonList(3));
+    protected GiveAction(CoreAddon addon) {
+        super(addon, "give", Collections.singletonList(3));
     }
 
     @SneakyThrows
     @Override
-    public boolean handle(CommandSender sender, List<Object> tokens, LinkedHashMap<String, Argument> arguments, int length, File scriptFile, int line) {
+    public boolean handle(CommandSender sender, List<Object> tokens, LinkedHashMap<String, Argument<?>> arguments, int length, File scriptFile, int line) {
         String target = (String) tokens.get(1);
         Material item = (Material) tokens.get(2);
         int quantity = (int) tokens.get(3);
@@ -39,6 +39,8 @@ public class GiveAction extends Action {
             }
             default: throw new ezDevException("Invalid target. Target: " + target, scriptFile, line);
         }
+
         return true;
     }
+
 }

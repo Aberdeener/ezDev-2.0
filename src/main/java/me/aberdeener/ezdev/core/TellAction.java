@@ -14,13 +14,13 @@ import java.util.List;
 
 public class TellAction extends Action {
 
-    protected TellAction() throws ezDevException {
-        super(CoreAddon.getInstance(), "tell", Collections.singletonList(-1));
+    protected TellAction(CoreAddon addon) {
+        super(addon, "tell", Collections.singletonList(-1));
     }
 
     @SneakyThrows
     @Override
-    public boolean handle(CommandSender sender, List<Object> tokens, LinkedHashMap<String, Argument> arguments, int length, File scriptFile, int line) {
+    public boolean handle(CommandSender sender, List<Object> tokens, LinkedHashMap<String, Argument<?>> arguments, int length, File scriptFile, int line) {
         for (Object e : tokens) {
             System.out.println(e);
         }
@@ -37,6 +37,8 @@ public class TellAction extends Action {
             }
             default: throw new ezDevException("Invalid target. Target: " + target, scriptFile, line);
         }
+
         return true;
     }
+
 }

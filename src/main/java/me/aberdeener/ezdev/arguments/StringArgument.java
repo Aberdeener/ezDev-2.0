@@ -1,12 +1,11 @@
 package me.aberdeener.ezdev.arguments;
 
-import me.aberdeener.ezdev.models.ezDevException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class StringArgument extends Argument {
+public class StringArgument extends Argument<String> {
 
-    public StringArgument() throws ezDevException {
+    public StringArgument() {
         super("string");
     }
 
@@ -18,6 +17,7 @@ public class StringArgument extends Argument {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -27,6 +27,7 @@ public class StringArgument extends Argument {
         for (int x = i; x <= tokens.length; x++) {
             sb.append(tokens[i]).append(" ");
         }
+
         return sb.toString().trim();
     }
 

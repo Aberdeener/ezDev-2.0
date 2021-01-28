@@ -1,13 +1,12 @@
 package me.aberdeener.ezdev.arguments;
 
-import me.aberdeener.ezdev.models.ezDevException;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
-public class MaterialArgument extends Argument {
+public class MaterialArgument extends Argument<Material> {
 
-    public MaterialArgument() throws ezDevException {
+    public MaterialArgument() {
         super("material");
     }
 
@@ -22,6 +21,6 @@ public class MaterialArgument extends Argument {
 
     @Override
     public Material parse(String[] tokens, int i) {
-        return Material.getMaterial(tokens[i]);
+        return Material.getMaterial(tokens[i].toUpperCase());
     }
 }

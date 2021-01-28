@@ -1,7 +1,6 @@
 package me.aberdeener.ezdev;
 
 import lombok.Getter;
-import lombok.SneakyThrows;
 import me.aberdeener.ezdev.models.Addon;
 import me.aberdeener.ezdev.models.ezDevException;
 

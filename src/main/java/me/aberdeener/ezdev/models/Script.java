@@ -66,17 +66,15 @@ public class Script {
                         throw new ezDevException("Headers require triggers. Header: " + header, getFile(), line.getKey());
                     }
                     Command.Executor executor = getExecutor(trigger, tokens, i, line.getKey());
-                    LinkedHashMap<String, Argument> arguments = getArguments(tokens, i);
+                    LinkedHashMap<String, Argument<?>> arguments = getArguments(tokens, i);
                     if (trigger.endsWith(":") && arguments.size() < 1) trigger = trigger.substring(0, trigger.length() - 1);
                     switch (header) {
                         case "command": {
                             inHeader = true;
                             Command command = new Command(trigger, this, executor, arguments);
-                            if (CommandManager.registerCommand(command)) {
+                            if (CommandManager.getInstance().registerCommand(command)) {
                                 getCommandLines().put(command, line.getKey());
                                 ezDev.getInstance().getLogger().info("Created command /" + command.getLabel() + " in script " + getFile().getName());
-                            } else {
-                                ezDev.getInstance().getLogger().warning("Command /" + command.getLabel() + " has previously been registered by an ezDev script (" + CommandManager.getCommandScript(command.getLabel()).getFile() + ")");
                             }
                             break;
                         }
@@ -98,7 +96,7 @@ public class Script {
                 }
             }
         }
-        ezDev.getScripts().add(this);
+        ezDev.getInstance().getScripts().add(this);
         ezDev.getInstance().getLogger().info("Loaded script " + getFile());
     }
 
@@ -143,8 +141,8 @@ public class Script {
         return executor;
     }
 
-    private LinkedHashMap<String, Argument> getArguments(String[] tokens, int i) {
-        LinkedHashMap<String, Argument> arguments = new LinkedHashMap<>();
+    private LinkedHashMap<String, Argument<?>> getArguments(String[] tokens, int i) {
+        LinkedHashMap<String, Argument<?>> arguments = new LinkedHashMap<>();
         for (int e = i; e < tokens.length; e++) {
             String argument = tokens[e];
             if (argument.endsWith(":")) argument = argument.substring(0, tokens[e].length() - 1);
@@ -152,7 +150,7 @@ public class Script {
                 String[] argInfo = argument.split("<");
                 String argumentType = argInfo[0].substring(1);
                 String argumentName = argInfo[1].substring(0, argInfo[1].length() - 2);
-                for (Argument a : ArgumentManager.getArguments()) {
+                for (Argument<?> a : ArgumentManager.getInstance().getArguments()) {
                     if (a.getLiteral().equals(argumentType)) {
                         arguments.put(argumentName, a);
                         break;

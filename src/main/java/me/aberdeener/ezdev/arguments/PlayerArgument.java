@@ -1,14 +1,13 @@
 package me.aberdeener.ezdev.arguments;
 
-import me.aberdeener.ezdev.models.ezDevException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class PlayerArgument extends Argument {
+public class PlayerArgument extends Argument<Player> {
 
-    public PlayerArgument() throws ezDevException {
+    public PlayerArgument() {
         super("player");
     }
 

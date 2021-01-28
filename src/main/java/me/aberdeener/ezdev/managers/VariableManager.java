@@ -9,47 +9,58 @@ import java.io.IOException;
 public class VariableManager {
 
     @Getter
-    private static boolean VARIABLES_ENABLED = false;
+    private boolean VARIABLES_ENABLED = false;
+    private final ezDev plugin;
 
-    public static void init() {
+    public VariableManager(ezDev plugin) {
+        this.plugin = plugin;
+
         File variablesFile = new File(ezDev.getInstance().getDataFolder() + File.separator + "variables.yml");
         if (!variablesFile.exists()) {
-            ezDev.getInstance().getLogger().info("Variables file does not exist! Attempting to create...");
+            this.plugin.getLogger().info("Variables file does not exist! Attempting to create...");
             try {
-                if (!ezDev.getInstance().getDataFolder().exists()) ezDev.getInstance().getDataFolder().mkdir();
+                if (!this.plugin.getDataFolder().exists()) ezDev.getInstance().getDataFolder().mkdir();
                 variablesFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
-                ezDev.getInstance().getLogger().severe("Failed to create variables.yml file!");
+                this.plugin.getLogger().severe("Failed to create variables.yml file!");
                 return;
             }
         }
+
         try {
-            ezDev.getInstance().getConfig().load(variablesFile);
+            this.plugin.getConfig().load(variablesFile);
             VARIABLES_ENABLED = true;
         } catch (Exception e) {
             e.printStackTrace();
-            ezDev.getInstance().getLogger().severe("Failed to load variables from file!");
+            this.plugin.getLogger().severe("Failed to load variables from file!");
         }
     }
 
-    public static boolean isVariable(String key) {
+    public boolean isVariable(String key) {
         if (!VARIABLES_ENABLED) return false;
-        key = extractKey(key);
-        return ezDev.getInstance().getConfig().get(key) != null;
+        return this.plugin.getConfig().getString(this.extractKey(key)) != null;
     }
 
-    public static String get(String key) {
+    public String get(String key) {
         if (!VARIABLES_ENABLED) return key;
-        key = extractKey(key);
-        Object value = ezDev.getInstance().getConfig().get(key);
-        if (value == null) return key;
-        return value.toString();
+        key = this.extractKey(key);
+        String value = this.plugin.getConfig().getString(key);
+        return value == null ? key : value;
     }
 
-    private static String extractKey(String raw) {
+    /**
+     * Converts <code>{key}</code> to <code>key</code> by removing the brackets
+     *
+     * @param raw key to extract
+     * @return extracted key
+     */
+    private String extractKey(String raw) {
         try {
             return raw.substring(raw.indexOf("{") + 1, raw.indexOf("}"));
-        } catch (StringIndexOutOfBoundsException ignored) { return raw; }
+        } catch (StringIndexOutOfBoundsException ignored) {
+            return raw;
+        }
     }
+
 }

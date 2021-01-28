@@ -1,12 +1,11 @@
 package me.aberdeener.ezdev.arguments;
 
-import me.aberdeener.ezdev.models.ezDevException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class IntegerArgument extends Argument {
+public class IntegerArgument extends Argument<Integer> {
 
-    public IntegerArgument() throws ezDevException {
+    public IntegerArgument() {
         super("int");
     }
 
@@ -18,6 +17,7 @@ public class IntegerArgument extends Argument {
             sender.sendMessage(ChatColor.RED + "Invalid integer.");
             return false;
         }
+
         return true;
     }
 
