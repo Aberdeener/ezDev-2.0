@@ -4,14 +4,15 @@ import lombok.Getter;
 import me.aberdeener.ezdev.ezDev;
 import me.aberdeener.ezdev.managers.AddonManager;
 
-public class Addon {
+public abstract class Addon {
 
     @Getter
     private final String name;
 
     protected Addon(String name) {
         this.name = name;
-        AddonManager.addAddon(this);
+        AddonManager.getInstance().addAddon(this);
         ezDev.getInstance().getLogger().info("Loaded Addon - " + getName());
     }
+
 }

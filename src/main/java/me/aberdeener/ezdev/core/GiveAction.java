@@ -1,6 +1,7 @@
 package me.aberdeener.ezdev.core;
 
 import lombok.SneakyThrows;
+import me.aberdeener.ezdev.arguments.Argument;
 import me.aberdeener.ezdev.models.Action;
 import me.aberdeener.ezdev.models.ezDevException;
 import org.bukkit.Bukkit;
@@ -11,28 +12,25 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class GiveAction extends Action {
 
-    protected GiveAction() throws ezDevException {
-        super(CoreAddon.getInstance(), "give", Collections.singletonList(3));
+    protected GiveAction(CoreAddon addon) {
+        super(addon, "give", Collections.singletonList(3));
     }
 
     @SneakyThrows
     @Override
-    public boolean handle(CommandSender sender, String[] tokens, int length, File scriptFile, int line) {
-        String target = tokens[1];
-        String item = tokens[2];
-        String quantity = tokens[3];
-        ItemStack itemStack = new ItemStack(Material.getMaterial(item), Integer.parseInt(quantity));
+    public boolean handle(CommandSender sender, List<Object> tokens, LinkedHashMap<String, Argument<?>> arguments, int length, File scriptFile, int line) {
+        String target = (String) tokens.get(1);
+        Material item = (Material) tokens.get(2);
+        int quantity = (int) tokens.get(3);
+        ItemStack itemStack = new ItemStack(item, quantity);
         switch (target) {
-            case "player":
             case "sender": {
-                if (sender instanceof Player) {
-                    ((Player) sender).getInventory().addItem(itemStack);
-                } else {
-                    throw new ezDevException("Only players can receive items.", scriptFile, line);
-                }
+                ((Player) sender).getInventory().addItem(itemStack);
                 break;
             }
             case "all": {
@@ -41,6 +39,8 @@ public class GiveAction extends Action {
             }
             default: throw new ezDevException("Invalid target. Target: " + target, scriptFile, line);
         }
+
         return true;
     }
+
 }

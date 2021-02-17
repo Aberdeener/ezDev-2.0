@@ -29,11 +29,11 @@ public class Listener {
             if (line.getKey() > scriptLine) {
                 if (line.getValue().equals("end")) break;
                 String[] tokens = line.getValue().split(" ");
-                Action action = ActionManager.findAction(tokens);
+                Action action = ActionManager.getInstance().findAction(tokens);
                 if (action == null) {
                     throw new ezDevException("Invalid action. Action: " + tokens[0]);
                 } else {
-                    action.handle(sender, tokens, tokens.length, getScript().getFile(), line.getKey());
+                    //action.handle(sender, tokens, tokens.length, getScript().getFile(), line.getKey());
                 }
             }
         }

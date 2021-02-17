@@ -9,9 +9,15 @@ import java.util.Set;
 public class AddonManager {
 
     @Getter
-    private static final Set<Addon> addons = new HashSet<>();
+    private static AddonManager instance;
+    @Getter
+    private final Set<Addon> addons = new HashSet<>();
 
-    public static void addAddon(Addon addon) {
-        getAddons().add(addon);
+    public AddonManager() {
+        instance = this;
+    }
+
+    public void addAddon(Addon addon) {
+        this.addons.add(addon);
     }
 }

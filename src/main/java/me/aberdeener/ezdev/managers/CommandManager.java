@@ -9,44 +9,50 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CommandManager implements Listener {
 
     @Getter
-    private static final Set<Command> commands = new HashSet<>();
+    private static CommandManager instance;
+    private final ezDev plugin;
     @Getter
-    private static final List<String> commandLabels = new ArrayList<>();
+    private final Map<String, Command> commandMap = new HashMap<>();
 
-    public static boolean registerCommand(Command command) {
-        if (getCommandLabels().contains(command.getLabel())) return false;
+    public CommandManager(ezDev plugin) {
+        instance = this;
+        this.plugin = plugin;
+    }
+
+    public boolean registerCommand(Command command) {
+        if (this.commandMap.containsKey(command.getLabel()))  {
+            ezDev.getInstance().getLogger().warning("Command /" + command.getLabel() + " has previously been registered by an ezDev script (" + CommandManager.getInstance().getCommandScript(command.getLabel()).getFile() + ")");
+            return false;
+        }
+
         try {
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
 
             bukkitCommandMap.setAccessible(true);
             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
 
-            commandMap.register("ezDev", command);
+            commandMap.register(command.getScript().getName(), command);
 
-            getCommands().add(command);
-            getCommandLabels().add(command.getLabel());
+            this.commandMap.put(command.getLabel(), command);
             return true;
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
-            ezDev.getInstance().getLogger().severe("Could not register command " + command.getLabel() + " in script: " + command.getScript().getFile().getName());
+            this.plugin.getLogger().severe("Could not register command " + command.getLabel() + " in script: " + command.getScript().getFile().getName());
             return false;
         }
     }
 
-    public static Script getCommandScript(String label) {
-        if (getCommandLabels().contains(label)) {
-            for (Command command : getCommands()) {
-                if (command.getLabel().equals(label)) return command.getScript();
-            }
+    public Script getCommandScript(String label) {
+        if (this.commandMap.containsKey(label)) {
+            return this.commandMap.get(label).getScript();
         }
+
         return null;
     }
+
 }

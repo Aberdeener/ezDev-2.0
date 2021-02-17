@@ -2,10 +2,11 @@ package me.aberdeener.ezdev.models;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
+import me.aberdeener.ezdev.arguments.Argument;
+import me.aberdeener.ezdev.ezDev;
+import me.aberdeener.ezdev.managers.ArgumentManager;
 import me.aberdeener.ezdev.managers.CommandManager;
 import me.aberdeener.ezdev.managers.ListenerManager;
-import me.aberdeener.ezdev.ezDev;
-import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerEvent;
 
 import java.io.File;
@@ -59,23 +60,21 @@ public class Script {
                 for (int i = 0; i <= tokens.length; i++ ) {
                     String header = tokens[i];
                     String trigger;
-                    // Get trigger for the header
                     try {
                         trigger = tokens[i + 1];
                     } catch (ArrayIndexOutOfBoundsException e) {
                         throw new ezDevException("Headers require triggers. Header: " + header, getFile(), line.getKey());
                     }
                     Command.Executor executor = getExecutor(trigger, tokens, i, line.getKey());
-                    if (executor == Command.Executor.BOTH) trigger = trigger.substring(0, trigger.length() - 1);
+                    LinkedHashMap<String, Argument<?>> arguments = getArguments(tokens, i);
+                    if (trigger.endsWith(":") && arguments.size() < 1) trigger = trigger.substring(0, trigger.length() - 1);
                     switch (header) {
                         case "command": {
                             inHeader = true;
-                            Command command = new Command(trigger, this, executor);
-                            if (CommandManager.registerCommand(command)) {
+                            Command command = new Command(trigger, this, executor, arguments);
+                            if (CommandManager.getInstance().registerCommand(command)) {
                                 getCommandLines().put(command, line.getKey());
                                 ezDev.getInstance().getLogger().info("Created command /" + command.getLabel() + " in script " + getFile().getName());
-                            } else {
-                                ezDev.getInstance().getLogger().warning("Command /" + command.getLabel() + " has previously been registered by an ezDev script (" + CommandManager.getCommandScript(command.getLabel()).getFile() + ")");
                             }
                             break;
                         }
@@ -97,21 +96,28 @@ public class Script {
                 }
             }
         }
-        ezDev.getScripts().add(this);
+        ezDev.getInstance().getScripts().add(this);
         ezDev.getInstance().getLogger().info("Loaded script " + getFile());
     }
 
     @SneakyThrows
     private Command.Executor getExecutor(String trigger, String[] tokens, int i, int line_number) {
-        // Get if they define a specific executor
         Command.Executor executor;
+        // If the trigger ends with a colon, we dont expect them to define an executor after - so we fall back to BOTH
+        boolean hasArgs = false;
         if (trigger.endsWith(":")) {
             executor = Command.Executor.BOTH;
         } else {
             try {
+                // Attempt to extract the executorType with the next token, if it doesnt exist then we catch the error
                 String executorType = tokens[i + 2];
                 if (!executorType.endsWith(":")) {
-                    throw new ezDevException("Executors must end with `:`. Executor: " + executorType, getFile(), line_number);
+                    try {
+                        String arg = tokens[i + 3];
+                        hasArgs = true;
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        throw new ezDevException("Executors must end with `:`. Executor: " + executorType, getFile(), line_number);
+                    }
                 } else if (!executorType.startsWith("(") || !executorType.contains(")")) {
                     throw new ezDevException("Executors must start with `(` and end with `)`. Executor: " + executorType, getFile(), line_number);
                 }
@@ -123,12 +129,35 @@ public class Script {
                     case "console":
                         executor = Command.Executor.CONSOLE;
                         break;
-                    default: throw new ezDevException("Invalid executor. Executor: " + executorType + ". Valid executors: `player`, `console`", getFile(), line_number);
+                    default: {
+                        if (!hasArgs) throw new ezDevException("Invalid executor. Executor: " + executorType + ". Valid executors: `player`, `console`", getFile(), line_number);
+                        else executor = Command.Executor.BOTH;
+                    }
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new ezDevException("Triggers must end with `:` when an executor is not specified. Trigger: " + trigger, getFile(), line_number);
             }
         }
         return executor;
+    }
+
+    private LinkedHashMap<String, Argument<?>> getArguments(String[] tokens, int i) {
+        LinkedHashMap<String, Argument<?>> arguments = new LinkedHashMap<>();
+        for (int e = i; e < tokens.length; e++) {
+            String argument = tokens[e];
+            if (argument.endsWith(":")) argument = argument.substring(0, tokens[e].length() - 1);
+            if (argument.matches("\\((.*?)<(.*?>)\\)")) {
+                String[] argInfo = argument.split("<");
+                String argumentType = argInfo[0].substring(1);
+                String argumentName = argInfo[1].substring(0, argInfo[1].length() - 2);
+                for (Argument<?> a : ArgumentManager.getInstance().getArguments()) {
+                    if (a.getLiteral().equals(argumentType)) {
+                        arguments.put(argumentName, a);
+                        break;
+                    }
+                }
+            }
+        }
+        return arguments;
     }
 }
